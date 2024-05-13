@@ -1,0 +1,40 @@
+const Home = ({ navigation, route }) => {
+  // Create a client instance
+  const client = new Paho.Client(
+    "flows.cubeworksinnovation.com",
+    Number(8055),
+    "/",
+    "testasdasd1231231"
+  );
+
+  // set callback handlers
+  client.onConnectionLost = onConnectionLost;
+  client.onMessageArrived = onMessageArrived;
+
+  // connect the client
+  client.connect({ onSuccess: onConnect });
+
+  // called when the client connects
+  function onConnect() {
+    // Once a connection has been made, make a subscription and send a message.
+    console.log("onConnect");
+    // client.subscribe("pawd/data");
+  }
+
+  // called when the client loses its connection
+  function onConnectionLost(responseObject) {
+    if (responseObject.errorCode !== 0) {
+      console.log("onConnectionLost:" + responseObject.errorMessage);
+    }
+  }
+
+  // called when a message arrives
+  function onMessageArrived(message) {
+    // console.log("onMessageArrived:" + message.payloadString);
+    const jsonData = JSON.parse(message.payloadString);
+    // Now you can access specific data inside jsonData
+    // console.log(jsonData);
+
+    // const pump1 = jsonData.pump1_power;
+    // console.log(pump1);
+  }
